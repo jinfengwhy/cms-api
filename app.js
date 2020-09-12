@@ -1,7 +1,13 @@
 const express = require('express')
 const router = require('./router')
+const bodyParser = require('body-parser')
 
 const app = express()
+
+// parse application/x-www-form-urlencoded
+app.use(bodyParser.urlencoded({ extended: false }))
+// parse application/json
+app.use(bodyParser.json())
 
 // 把路由应用到 app 中
 app.use(router)

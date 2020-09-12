@@ -42,3 +42,6 @@ router
     .get('/session', sessionController.get)
     .post('/session', sessionController.create)
     .delete('/session', sessionController.destroy)
+
+    
+module.exports = router

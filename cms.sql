@@ -8,12 +8,13 @@ use cms;
 create table users(
 	id int primary key auto_increment,
     username varchar(50) not null, -- 用户名
+    nickname varchar(50) not null, -- 昵称
     password varchar(50) not null, -- 密码
     email varchar(50) not null, -- 邮箱
     avatar varchar(100) null, -- 头像
     gender bit null, -- 性别
-    create_time date not null, -- 创建时间
-    modify_time date not null -- 修改时间
+    create_time datetime not null, -- 创建时间
+    modify_time datetime not null -- 修改时间
 );
 
 -- 话题表
