@@ -30,9 +30,7 @@ exports.create = async (req, res, next) => {
         const users = await db.query(`select * from users where id = ${ret.insertId}`)
         res.status(201).json(users[0])
     } catch (err) {
-        res.status(500).json({
-            error: err.message
-        })    
+        next(err)
     }
 }
 
