@@ -6,6 +6,6 @@ exports.create = (req, res, next) => {
 
 }
 
-exports.delete = (req, res, next) => {
+exports.destroy = (req, res, next) => {
 
 }

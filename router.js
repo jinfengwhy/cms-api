@@ -9,30 +9,30 @@ const sessionController = require('./controllers/session')
  * 用户资源
  */
 router
-    .get('/users', userController.query)
-    .post('/users', userController.new)
+    .get('/users', userController.list)
+    .post('/users', userController.create)
     .patch('/users/:id', userController.update)
-    .delete('/users/:id', userController.delete)
+    .delete('/users/:id', userController.destroy)
 
 
 /**
  * 话题资源
  */
 router
-    .get('/topics', topicController.query)
-    .post('/topics', topicController.new)
+    .get('/topics', topicController.list)
+    .post('/topics', topicController.create)
     .patch('/topics/:id', topicController.update)
-    .delete('/topics/:id', topicController.delete) 
+    .delete('/topics/:id', topicController.destroy) 
 
 
 /**
  * 评论资源
  */
 router
-    .get('/comments', commentController.query)
-    .post('/comments', commentController.new)
+    .get('/comments', commentController.list)
+    .post('/comments', commentController.create)
     .patch('/comments/:id', commentController.update)
-    .delete('/comments/:id', commentController.delete)
+    .delete('/comments/:id', commentController.destroy)
 
 
 /**
@@ -41,4 +41,4 @@ router
 router
     .get('/session', sessionController.get)
     .post('/session', sessionController.create)
-    .delete('/session', sessionController.delete)
+    .delete('/session', sessionController.destroy)
