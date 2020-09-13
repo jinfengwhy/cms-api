@@ -36,6 +36,7 @@ router
  */
 router
     .get('/topics', topicController.list)
+    // 同一个请求对应多个路由中间件
     .post('/topics', checkLogin, topicController.create)
     .patch('/topics/:id', checkLogin, topicController.update)
     .delete('/topics/:id', checkLogin, topicController.destroy) 
