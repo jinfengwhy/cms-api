@@ -12,20 +12,10 @@ exports.list = (req, res, next) => {
  * @param {*} next 
  */
 exports.create = async (req, res, next) => {
-    // 对象的解构赋值
-    const {user} = req.session
-    
-    if (!user) {
-        // 状态码 401 表示要求用户进行身份验证
-        return res.status(401).json({
-            err: 'Unauthorized'
-        })
-    }
-
     const body = req.body
     body.create_time = moment().format('YYYY-MM-DD hh:mm:ss')
     body.modify_time = moment().format('YYYY-MM-DD hh:mm:ss')
-    body.user_id = user.id
+    body.user_id = req.session.user.id
 
     const sqlStr = `
         insert into topics (title, content, user_id, create_time, modify_time) 
