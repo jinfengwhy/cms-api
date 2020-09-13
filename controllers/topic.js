@@ -1,8 +1,41 @@
 const moment = require('moment')
 const db = require('../models/db')
 
-exports.list = (req, res, next) => {
+/**
+ * 分页话题列表
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.list = async (req, res, next) => {
+    // 对象解构赋值的默认值写法
+    let {_page = 1, _limit = 20} = req.query
 
+    if (_page < 1) {
+        _page = 1
+    }
+
+    if (_limit < 1) {
+        _limit = 1
+    }
+
+    if (_limit > 20) {
+        _limit = 20
+    }
+
+    // 分页处理开始的索引
+    const start = (parseInt(_page) - 1) * _limit
+
+    const sqlStr = `
+        select * from topics limit ${start}, ${_limit}
+    `
+
+    try {
+        const topics = await db.query(sqlStr)
+        res.status(200).json(topics)
+    } catch (err) {
+        next(err)
+    }
 }
 
 /**
