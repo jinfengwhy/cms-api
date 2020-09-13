@@ -9,6 +9,7 @@ const pool = mysql.createPool({
 	database: "cms",
 });
 
+// query 方法：查询返回数组，增删改返回对象
 exports.query = function (sqlStr) {
     return new Promise((resolve, reject) => {
         // 从连接池中拿出一个连接
