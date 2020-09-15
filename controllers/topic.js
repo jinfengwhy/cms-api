@@ -76,6 +76,9 @@ exports.update = (req, res, next) => {
 }
 
 exports.destroy = async (req, res, next) => {
+    // 根据话题 id 查询得到该话题所属的作者 id
+    // 如果话题中的 user_id === 当前登录用户的 id
+    // 则可以进行删除，否则不允许
     // url 中的 :id 叫做动态路由参数
     // 可以通过 req.params 来获取动态路由参数
     // 查询字符串：req.query
@@ -83,10 +86,30 @@ exports.destroy = async (req, res, next) => {
     // 动态路径参数：req.params
     try {
         const {id} = req.params
-        const sqlStr = `
+        const [topic] = await db.query(`
+            select * from topics where id = ${id}
+        `)
+
+        // 如果资源不存在
+        if (!topic) {
+            return res.status(404).json({
+                error: 'Topic not Found.'
+            })
+        }
+
+        // 如果话题不属于作者自己
+        if (topic.user_id !== req.session.user.id) {
+            return res.status(400).json({
+                error: 'Delete Invalid.'
+            })
+        }
+
+        // 执行删除操作
+        await db.query(`
             delete from topics where id = ${id}
-        `
-        await db.query(sqlStr)
+        `)
+
+        // 响应成功
         res.status(201).json({})
     } catch (err) {
         next(err)   
