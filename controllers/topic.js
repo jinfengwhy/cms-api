@@ -75,6 +75,20 @@ exports.update = (req, res, next) => {
 
 }
 
-exports.destroy = (req, res, next) => {
-
+exports.destroy = async (req, res, next) => {
+    // url 中的 :id 叫做动态路由参数
+    // 可以通过 req.params 来获取动态路由参数
+    // 查询字符串：req.query
+    // POST 请求体：req.body
+    // 动态路径参数：req.params
+    try {
+        const {id} = req.params
+        const sqlStr = `
+            delete from topics where id = ${id}
+        `
+        await db.query(sqlStr)
+        res.status(201).json({})
+    } catch (err) {
+        next(err)   
+    }
 }
