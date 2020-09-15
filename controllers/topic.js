@@ -84,29 +84,11 @@ exports.destroy = async (req, res, next) => {
     // 查询字符串：req.query
     // POST 请求体：req.body
     // 动态路径参数：req.params
+
     try {
-        const {id} = req.params
-        const [topic] = await db.query(`
-            select * from topics where id = ${id}
-        `)
-
-        // 如果资源不存在
-        if (!topic) {
-            return res.status(404).json({
-                error: 'Topic not Found.'
-            })
-        }
-
-        // 如果话题不属于作者自己
-        if (topic.user_id !== req.session.user.id) {
-            return res.status(400).json({
-                error: 'Delete Invalid.'
-            })
-        }
-
         // 执行删除操作
         await db.query(`
-            delete from topics where id = ${id}
+            delete from topics where id = ${req.params.id}
         `)
 
         // 响应成功

@@ -4,6 +4,7 @@ const userController = require('./controllers/user')
 const topicController = require('./controllers/topic')
 const commentController = require('./controllers/comment')
 const sessionController = require('./controllers/session')
+const db = require('./models/db')
 
 // 定义中间件 checkLogin，这样需要验证的地方调一下即可
 // 只有该中间件验证通过并调用 next，才会走下一个中间件
@@ -16,6 +17,33 @@ function checkLogin (req, res, next) {
         return res.status(401).json({
             err: 'Unauthorized'
         })
+    }
+
+    next()
+}
+
+async function checkTopic (req, res, next) {
+    try {    
+        const {id} = req.params
+        const [topic] = await db.query(`
+            select * from topics where id = ${id}
+        `)
+
+        // 如果资源不存在
+        if (!topic) {
+            return res.status(404).json({
+                error: 'Topic not Found.'
+            })
+        }
+
+        // 如果话题不属于作者自己
+        if (topic.user_id !== req.session.user.id) {
+            return res.status(400).json({
+                error: 'Delete Invalid.'
+            })
+        }
+    } catch (err) {
+        next(err)
     }
 
     next()
@@ -38,8 +66,9 @@ router
     .get('/topics', topicController.list)
     // 同一个请求对应多个路由中间件
     .post('/topics', checkLogin, topicController.create)
-    .patch('/topics/:id', checkLogin, topicController.update)
-    .delete('/topics/:id', checkLogin, topicController.destroy) 
+    // 登录校验成功后，接下来是话题相关的校验
+    .patch('/topics/:id', checkLogin, checkTopic, topicController.update)
+    .delete('/topics/:id', checkLogin, checkTopic, topicController.destroy) 
 
 
 /**
