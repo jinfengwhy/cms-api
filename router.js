@@ -76,9 +76,9 @@ router
  */
 router
     .get('/comments', commentController.list)
-    .post('/comments', commentController.create)
-    .patch('/comments/:id', commentController.update)
-    .delete('/comments/:id', commentController.destroy)
+    .post('/comments', checkLogin, commentController.create)
+    .patch('/comments/:id', checkLogin, commentController.update)
+    .delete('/comments/:id', checkLogin, commentController.destroy)
 
 
 /**

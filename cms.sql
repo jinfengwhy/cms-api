@@ -34,6 +34,6 @@ create table comments (
     article_id int not null, -- 所属文章
     user_id int not null, -- 所属用户
     reply_id int null, -- 所属回复人
-    create_time datetime not null, -- 创建时间
-    modify_time datetime not null -- 修改时间
+    create_time bigint not null, -- 创建时间
+    modify_time bigint not null -- 修改时间
 )
