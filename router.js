@@ -39,7 +39,7 @@ async function checkTopic (req, res, next) {
         // 如果话题不属于作者自己
         if (topic.user_id !== req.session.user.id) {
             return res.status(400).json({
-                error: 'Delete Invalid.'
+                error: 'Action Invalid.'
             })
         }
     } catch (err) {

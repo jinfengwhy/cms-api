@@ -71,10 +71,46 @@ exports.create = async (req, res, next) => {
     }
 }
 
-exports.update = (req, res, next) => {
+/**
+ * 更新话题
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.update = async (req, res, next) => {
+    try {
+        // 获取路径参数
+        const {id} = req.params
+        // 获取表单数据
+        const body = req.body
+        const sqlStr = `
+            update topics 
+            set title = '${body.title}',
+            content = '${body.content}',
+            modify_time = '${moment().format('YYYY-MM-DD hh:mm:ss')}' 
+            where id = ${id}
+        `
 
+        // 执行更新操作
+        await db.query(sqlStr)
+        
+        const updatedTopic = await db.query(`
+            select * from topics where id = ${id}
+        `)
+
+        res.status(201).json(updatedTopic)
+    } catch (err) {
+        next(err)        
+    }
+    
 }
 
+/**
+ * 删除话题
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
 exports.destroy = async (req, res, next) => {
     // 根据话题 id 查询得到该话题所属的作者 id
     // 如果话题中的 user_id === 当前登录用户的 id
