@@ -64,6 +64,7 @@ router
  */
 router
     .get('/topics', topicController.list)
+    .get('/topics/:id', topicController.one)
     // 同一个请求对应多个路由中间件
     .post('/topics', checkLogin, topicController.create)
     // 登录校验成功后，接下来是话题相关的校验

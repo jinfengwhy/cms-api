@@ -39,6 +39,26 @@ exports.list = async (req, res, next) => {
 }
 
 /**
+ * 获取单个话题
+ * @param {*} req 
+ * @param {*} res 
+ * @param {*} next 
+ */
+exports.one = async (req, res, next) => {
+    try {
+        const {id} = req.params
+        const sqlStr = `
+            select * from topics where id = '${id}'
+        `
+        const topics = await db.query(sqlStr)
+        // TODO: 处理话题可能查不到的情况
+        res.status(200).json(topics[0])    
+    } catch (err) {
+        next(err)
+    }
+}
+
+/**
  * 创建话题
  * @param {*} req 
  * @param {*} res 
