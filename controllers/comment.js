@@ -1,7 +1,13 @@
 const db = require('../models/db')
 
 exports.list = async (req, res, next) => {
-
+    const {topic_id} = req.query
+    const sqlStr = `
+        select * from comments where topic_id = '${topic_id}'
+    `
+    const comments = await db.query(sqlStr)
+    // TODO: 处理接收的 topic_id 不存在的情况
+    res.status(200).json(comments)
 }
 
 exports.create = async (req, res, next) => {
