@@ -1,9 +1,18 @@
 const md5 = require('blueimp-md5')
 const moment = require('moment')
 const db = require('../models/db')
+const sqlHelper = require('../utilities/sqlhelper')
 
-exports.list = (req, res, next) => {
-    res.send('test code.')
+exports.list = async (req, res, next) => {
+    try {
+        const andConditionStr = sqlHelper.andCondition(req.query)
+        const sqlStr = `
+            select * from users where ${andConditionStr}
+        `
+        res.status(200).json(await db.query(sqlStr))
+    } catch (err) {
+        next(err)
+    }
 }
 
 exports.create = async (req, res, next) => {
