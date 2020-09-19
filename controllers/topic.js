@@ -9,6 +9,12 @@ const db = require('../models/db')
  */
 exports.list = async (req, res, next) => {
     try {
+        // 对象解构赋值起别名的写法
+        // let {_page: pageNo, _limit: pageSize} = {
+        //     _page: 1,
+        //     _limit: 10
+        // }
+
         // 对象解构赋值的默认值写法
         let {_page = 1, _limit = 20} = req.query
 
@@ -32,7 +38,16 @@ exports.list = async (req, res, next) => {
         `
 
         const topics = await db.query(sqlStr)
-        res.status(200).json(topics)
+
+        // 查询总条数 先数组解构再对象解构
+        const [{count}] = await db.query(`
+            select count(*) as count from topics
+        `)
+
+        res.status(200).json({
+            topics,
+            count
+        })
     } catch (err) {
         next(err)
     }
@@ -114,7 +129,7 @@ exports.update = async (req, res, next) => {
         // 执行更新操作
         await db.query(sqlStr)
         
-        const updatedTopic = await db.query(`
+        const [updatedTopic] = await db.query(`
             select * from topics where id = ${id}
         `)
 
