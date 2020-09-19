@@ -31,7 +31,7 @@ create table topics(
 create table comments (
 	id int primary key auto_increment,
     content text not null, -- 评论内容
-    article_id int not null, -- 所属文章
+    topic_id int not null, -- 所属话题
     user_id int not null, -- 所属用户
     reply_id int null, -- 所属回复人
     create_time bigint not null, -- 创建时间

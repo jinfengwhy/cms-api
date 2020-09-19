@@ -11,15 +11,15 @@ exports.create = async (req, res, next) => {
         // 3. 发送响应数据
         const {
             content = '',
-            article_id,
+            topic_id,
             reply_id = 0
         } = req.body
         const sqlStr = `
-            insert into comments(content, create_time, modify_time, article_id, user_id, reply_id) 
+            insert into comments(content, create_time, modify_time, topic_id, user_id, reply_id) 
             values('${content}', 
             '${Date.now()}', 
             '${Date.now()}', 
-            ${article_id}, 
+            ${topic_id}, 
             ${req.session.user.id},
             ${reply_id})
         `
